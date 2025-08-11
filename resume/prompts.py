@@ -3,7 +3,7 @@ System: You are a precise LaTeX resume editor.
 
 Task:
 - Modify ONLY the Technical Projects bullets to match the job. Do NOT change Technical Skills or any other section.
-- Keep exactly 18 bullets across all projects (the total count of \resumeItem lines must equal 18).
+- Keep exactly 18 bullets across all projects (the total count of \resumeItem lines must equal 18 NO MORE THAN 18)
 - Each bullet ≤110 visible characters (ignore LaTeX markup). Prefer “I did X to solve Y, resulting in Z” with metrics.
 - Bold at most 1–2 key terms per bullet using \textbf{}.
 - Do not invent technologies that aren’t listed in PROJECT_DESCRIPTIONS.
@@ -88,131 +88,128 @@ Return exactly one fenced block:
 End.
 """
 
+START_OF_RESUME = r"""\documentclass[letterpaper,11pt]{article}
 
-START_OF_RESUME = r"""
-\documentclass[letterpaper,11pt]{article}
-
-\usepackage[utf8]{inputenc}
+% ---------- Packages ----------
 \usepackage[dvipsnames]{xcolor}
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
-\usepackage[left=.95in, right=1.1in, bottom=.9in, includehead, headheight=0pt]{geometry}
+\usepackage[left=.95in, right=1.1in, bottom=.25in, includehead, headheight=0pt]{geometry}
 \usepackage[
-    colorlinks=true,
-    urlcolor=black,
-    linkcolor=black,
-    citecolor=black,
-    pdfborder={0 0 0}
+  colorlinks=true,
+  urlcolor=black,
+  linkcolor=black,
+  citecolor=black,
+  pdfborder={0 0 0}
 ]{hyperref}
+\usepackage{url}
 
+% ---------- Global settings ----------
+\emergencystretch=2em
+\sloppy
+
+% List spacing — ultra compact (kills white space around bullets)
+\setlistdepth{6}
+\renewlist{itemize}{itemize}{6}
+\setlist[itemize]{label=\textbullet,leftmargin=*,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt}
+\setlist[enumerate]{leftmargin=*,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt}
+
+% ---------- Page style ----------
 \urlstyle{same}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
-\setlength{\headsep}{0.2in}
+\setlength{\headsep}{0.18in} % small but readable
 
 % Adjust margins
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\textwidth}{1in}
-\addtolength{\topmargin}{-1in}
-\addtolength{\textheight}{1.0in}
+\addtolength{\topmargin}{-0.9in}
+\addtolength{\textheight}{0.0in}
 
 \raggedbottom
 \raggedright
 \setlength{\tabcolsep}{0in}
 
-% Section formatting
+% ---------- Section formatting (tighten space under headers) ----------
+\titlespacing*{\section}{0pt}{6pt}{8pt}
 \titleformat{\section}{
-  \vspace{-7pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+  \scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-6pt}]
 
-%-------------------------
-% Custom commands
-\newcommand{\resumeItem}[1]{
-  \item\small{
-    {#1 \vspace{-2pt}}
-  }
-}
-
+% ---------- Custom commands ----------
+\newcommand{\resumeItem}[1]{\item\small{{#1}}}
 \newcommand{\resumeSubheading}[4]{
-  \vspace{-5pt}\item
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{#1} & #2 \\
-      \textit{\small#3} & \textit{\small #4} \\
-    \end{tabular*}\vspace{-7pt}
+  \item
+  \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & #2 \\
+    \textit{\small #3} & \textit{\small #4} \\
+  \end{tabular*}
 }
-
 \newcommand{\resumeSubSubheading}[2]{
-    \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textit{\small #1} & \textit{\small #2} \\
+  \end{tabular*}
 }
-
 \newcommand{\resumeProjectHeading}[2]{
-    \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \small#1 & #2 \\
-    \end{tabular*}\vspace{-8pt}
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small #1 & #2 \\
+  \end{tabular*}
 }
-
-\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
-
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}}
 \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
-
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.12in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 \newcommand{\resumeItemListStart}{\begin{itemize}}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-7pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
 
-%-------------------------------------------
+% ---------- Document start ----------
 \begin{document}
 
-% ---------- Header (self-contained) ----------
+% ---------- Header ----------
 \begin{flushleft}
-{\huge\bfseries Owen Fisher}\\[-0.1em]        % bigger name + tighter gap
+{\huge\bfseries Owen Fisher}\\[-0.1em]
 \href{https://owen-portfolio-git-main-owens-projects-e5b63a60.vercel.app/}{Portfolio}\,$|$\,%
 \href{https://www.linkedin.com/in/fisherowen}{LinkedIn}\,$|$\,%
 \href{https://github.com/obro79}{GitHub}\,$|$\,%
 \href{mailto:owenfisher46@gmail.com}{OwenFisher46@gmail.com}\,$|$\,778--700--5680
 \end{flushleft}
-\vspace{-1.5em}                               % pull next section up a bit
+\vspace{-10pt}
 
-%  Education 
+% ---------- Education ----------
 \section{\textcolor{Plum}{Education}}
 \resumeSubHeadingListStart
   \resumeSubheading
   {The University of British Columbia}{\textbf{Vancouver, BC}}
   {\textbf{B.Sc., Math, Minor Computer Science} (GPA: 3.7/4.0)}{Expected Graduation: May 2027}
   \resumeItemListStart
-      \resumeItem{Coursework: Software Engineering, Probability, DSA, Stochastic Processes, Machine Learning}
+    \resumeItem{Coursework: Software Engineering, Probability, DSA, Stochastic Processes, Machine Learning}
   \resumeItemListEnd
 \resumeSubHeadingListEnd
 
-% Technical Skills 
+% ---------- Technical Skills ----------
 \section{\textcolor{Plum}{Technical Skills}}
 \textbf{Languages}: Python (NumPy, Pandas, Matplotlib), C++, Java, R, PostgreSQL, MATLAB, TypeScript\\
 \textbf{Tools \& Testing}: Git, CI/CD --- GitHub Actions \& Vercel, PyTest, Cypress
 
-%  Experience 
-\vspace{-0.5em}
+% ---------- Experience ----------
 \section{\textcolor{Plum}{Experience}}
-\vspace{0.25em }
 \resumeSubHeadingListStart
-
   \resumeSubheading
   {Quantitative Developer}{Vancouver, BC}
-  {RBC Global Asset Management}{Sept. 2025 -- Dec. 2025}
+  {RBC Global Asset Management}{Sept.\ 2025 -- Dec.\ 2025}
   \resumeItemListStart
-    \resumeItem{Will re-engineer MATLAB pricing-risk engine to modular Python + Dask on Helios---forecast for 70\% faster valuations and 50\% shorter releases via CI/CD.}
+    \resumeItem{Will re-engineer MATLAB pricing–risk engine to modular Python + Dask on Helios—forecast for 70\% faster valuations and 50\% shorter releases via CI/CD.}
   \resumeItemListEnd
 
   \resumeSubheading
   {Quantitative Developer}{Vancouver, BC}
-  {Quantico Research}{Jan. 2025 -- May 2025}
+  {Quantico Research}{Jan.\ 2025 -- May 2025}
   \resumeItemListStart
     \resumeItem{Built real-time pipelines to ingest \& clean seismic streams at sub-200ms latency.}
     \resumeItem{Applied \textbf{HMM} for real-time seismic risk adjustment, improving internal alert thresholds.}
@@ -221,10 +218,15 @@ START_OF_RESUME = r"""
 
   \resumeSubheading
   {Frontend Engineer}{Vancouver, BC}
-  {UBC Actuarial Science Club}{May. 2025 -- Present}
+  {UBC Actuarial Science Club}{May 2025 -- Present}
   \resumeItemListStart
-      \resumeItem{Spearheaded website build using Next.js, React \& Tailwind CSS, boosting club engagement +200\%.}
-      \resumeItem{Built interactive course planning tool serving 150+ students, streamlining semester planning workflows.}
+    \resumeItem{Spearheaded website build using Next.js, React \& Tailwind CSS, boosting club engagement +200\%.}
+    \resumeItem{Built interactive course planning tool serving 150+ students, streamlining semester planning workflows.}
   \resumeItemListEnd
 \resumeSubHeadingListEnd
+% ---------- Technical Projects ----------
+\section{\textcolor{Plum}{Technical Projects}}
+"""
+END_OF_RESUME = r"""
+\end{document}
 """

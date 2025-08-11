@@ -1,19 +1,20 @@
 import requests
 import subprocess
 from pathlib import Path
-from prompts import RESUME_PROMPT, START_OF_RESUME
+from prompts import RESUME_PROMPT, START_OF_RESUME, END_OF_RESUME
 
 def tailor_resume(company_name: str, job_title: str, job_description: str) -> str:
     role = f"{job_title} at {company_name} " + job_description
     prompt = RESUME_PROMPT.replace("<<JOB_DESCRIPTION>>", role)
     text = prompt_ollama(prompt)
-    return START_OF_RESUME + text
+    return START_OF_RESUME + text + END_OF_RESUME
 
 def prompt_ollama(prompt: str, model: str = "llama3.1") -> str:
     url = "http://127.0.0.1:11434/api/generate"
     payload = {"model": model, "prompt": prompt, "stream": False}
     resp = requests.post(url, json=payload)
     resp.raise_for_status()
+    print(resp.json())
     return resp.json().get("response", "")
 
 def llm_response_to_latex(response: str, output_file: str | Path = "resume.tex") -> Path:
