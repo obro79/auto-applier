@@ -3,7 +3,7 @@ System: You are a precise LaTeX resume editor.
 
 Task:
 - Modify ONLY the Technical Projects bullets to match the job. Do NOT change Technical Skills or any other section.
-- Keep exactly 18 bullets across all projects (the total count of \resumeItem lines must equal 18 NO MORE THAN 18)
+- Keep exactly 18 bullets across all projects (the total count of \resumeItem lines must equal 18 eg 6 projects with 3 bullets each)
 - Each bullet ≤110 visible characters (ignore LaTeX markup). Prefer “I did X to solve Y, resulting in Z” with metrics.
 - Bold at most 1–2 key terms per bullet using \textbf{}.
 - Do not invent technologies that aren’t listed in PROJECT_DESCRIPTIONS.
@@ -229,4 +229,88 @@ START_OF_RESUME = r"""\documentclass[letterpaper,11pt]{article}
 """
 END_OF_RESUME = r"""
 \end{document}
+"""
+
+
+LATEX_PROMPT = r"""You are an expert LaTeX formatter and compiler.  
+Your task is to FIX any LaTeX syntax or formatting issues in the given section  
+so that it compiles successfully with `tectonic` without changing the meaning or layout.
+
+Rules:
+- Keep the content semantically identical.
+- Do NOT remove or add resume items, dates, or descriptions.
+- Escape special characters outside of math mode:
+  `_` → `\_` , `%` → `\%` , `&` → `\&` , `#` → `\#`
+- Ensure math mode `$...$` delimiters are balanced.
+- Ensure `{` and `}` braces are balanced.
+- Keep indentation and line breaks clean.
+- Do not output any explanation or commentary.
+- Output ONLY the corrected LaTeX code, nothing else.
+- The LaTeX MUST start with `\resumeSubHeadingListStart` and end with `\resumeSubHeadingListEnd`.
+
+"""
+
+COVER_LETTER = r"""\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\pagenumbering{gobble}
+
+\begin{document}
+
+\noindent
+\textbf{Owen Fisher} \\
+\href{mailto:OwenFisher46@gmail.com}{OwenFisher46@gmail.com} \\
+778 700 5680 \\
+Vancouver, BC \\
+\emph{Available Aug.\ 15–Sep.\ 30, 2025 (part-time, remote)} \\
+
+\vspace{1em}
+
+\noindent
+July 22, 2025 \\
+Jason H. M. Wong \& Firas Moosvi \\
+PrairieLearn Exam Experience Grant Project \\
+Department of Computer Science, UBC \\
+Vancouver, BC \\
+
+\vspace{1em}
+
+\noindent
+\textbf{Re: Part-time Developer (PrairieLearn Exam Experience Project)} \\
+
+\vspace{1em}
+
+Dear Dr. Wong and Dr. Moosvi,
+
+I am eager to contribute to your grant-funded project to improve the PrairieLearn exam experience. I am a third-year UBC Mathematics student with a Computer Science minor, based in Vancouver, and I work daily with \textbf{Python}, \textbf{JavaScript/TypeScript}, Git, and collaborative review workflows. The mandate to increase grading granularity and reduce test anxiety resonates with my focus on building student-centered tools and clear feedback interfaces.
+
+Across my projects, I have implemented features end to end, discussed approaches with teammates, and documented decisions in GitHub Issues, Milestones, and Discussions. For example, in “Financely” I automated CI/CD with Cypress tests on every push, and in “PrepMe” I designed typed APIs and real-time feedback flows while maintaining architecture docs to smooth handoffs. In “Pantry Pal,” I built a Flask REST API and normalized SQLite schema to keep latency near 50 ms, and our team relied on feature branches and pull requests to manage reviews. These experiences mirror your needs: writing and maintaining code, participating in code review, and tracking progress transparently.
+
+I am comfortable joining a remote team that meets weekly and stays connected on Slack. I thrive on learning quickly: whether integrating Plaid and Dwolla webhooks, tuning an OR-Tools solver to shrink scheduling time from 40 hours to 45 seconds, or achieving 98–100\% test coverage with PyTest and JUnit, I seek feedback, iterate fast, and keep quality high. I can start on or before August 15 and commit the ~90 project hours through September 30.
+
+Thank you for considering my application. I would welcome the chance to discuss how I can help deliver clearer, less stressful grade insights to PrairieLearn students. My GitHub is \href{https://github.com/obro79}{github.com/obro79}. I look forward to hearing from you.
+
+\vspace{1em}
+
+Sincerely,\\
+\textbf{Owen Fisher}
+
+\end{document}
+"""
+
+COVER_LETTER_PROMPT= r"""
+System: You are a precise LaTeX cover letter editor.
+
+Task:
+- Rewrite the cover letter text to tailor to the given job description and resume.
+- Do not edit the formatting just the content
+- The final output needs to be a latex formatted document free of errors and 200-400 words that would fit on a single page
+Below is the job description as well as an example cover letter
+
+### Job Description
+<<JOB_DESCRIPTION>>
+
+### Cover Letter Example
+<<COVER_LETTER_EX>>
+
 """

@@ -1,0 +1,25 @@
+{
+  "First Name": "Owen",
+  "Last Name": "Fisher",
+  "School": "University of British Columbia",
+  "Degree": "B.Sc. in Mathematics",
+  "Minor": "Computer Science",
+  "Expected Graduation": "May 2027",
+  "Email": "owenfisher46@gmail.com",
+  "Phone": "+1-778-700-5680",
+  "Skills": [
+    "Python",
+    "Java",
+    "Linux",
+    "Data Structures & Algorithms",
+    "Machine Learning",
+    "Systematic Program Design",
+    "Software Engineering"
+  ],
+  "Interests": [
+    "Quantitative Development",
+    "Systematic Investing",
+    "Global Asset Management"
+  ],
+  "Resume": "resume.pdf"
+}
